@@ -1,0 +1,20 @@
+version: '3'
+services:
+  web:
+    image: 'gitlab/gitlab-ee:latest'
+    restart: always
+    hostname: 'gitlab.local.com'
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'http://172.16.94.56:80'
+        gitlab_rails['gitlab_shell_ssh_port'] = 2224
+    ports:
+      - '80:80'
+    volumes:
+      - '$GITLAB_HOME/config:/etc/gitlab'
+      - '$GITLAB_HOME/logs:/var/log/gitlab'
+      - '$GITLAB_HOME/data:/var/opt/gitlab'
+    shm_size: '4g'
+#sudo docker run -it --name gitlab -p 8081:80 -d gitlab/gitlab-ee
+#check password
+# sudo docker exec -it 6face grep 'Password:' /etc/gitlab/initial_root_password

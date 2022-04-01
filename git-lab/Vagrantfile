@@ -1,0 +1,19 @@
+Vagrant.configure("2") do |config|
+  config.vm.box = "centos/7"
+  config.vm.network "private_network", ip: "172.16.10.103"
+  config.vm.hostname = "Git-lab"
+
+  config.vm.provider "virtualbox" do |vb|
+     vb.name = "Git-lab"
+     vb.cpus = 4
+     vb.memory = "4096"
+  end
+  config.vm.provision "shell", inline: <<-SHELL
+    echo "root password"
+    echo "123" | passwd --stdin root
+    sed -i 's/^PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
+    systemctl reload sshd
+    yum  -y update
+  SHELL
+end
+#https://about.gitlab.com/install/#centos-7

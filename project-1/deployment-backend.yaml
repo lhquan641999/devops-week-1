@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: back-end-1-pod
+spec:
+  selector:
+    matchLabels:
+      app: back-end-database
+  template:
+    metadata:
+      labels:
+        app: back-end-database
+    spec:
+      containers:
+      - name: pg
+        image: quanlh0604/data-base-postgres
+        ports:
+        - containerPort: 5432
+        env:
+          - name: POSTGRES_DB
+            value: "users1"
+          - name: POSTGRES_USER
+            value: "admin1"
+          - name: POSTGRES_PASSWORD
+            value: "admin1"
+      - name: back-end
+        image: quanlh0604/backend-week-3
+        ports:
+        - containerPort: 3000

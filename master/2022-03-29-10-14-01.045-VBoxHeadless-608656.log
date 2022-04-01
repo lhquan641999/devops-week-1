@@ -1,0 +1,12 @@
+Log created: 2022-03-29T10:14:01.455081000Z
+Process ID:  608656 (0x94990)
+Parent PID:  1297 (0x511)
+Executable:  /usr/lib/virtualbox/VBoxHeadless
+Arg[0]: /usr/lib/virtualbox/VBoxHeadless
+Arg[1]: --comment
+Arg[2]: ansible-lab_db1_1648383241678_78510
+Arg[3]: --startvm
+Arg[4]: c6e5b2bd-cb01-4d1a-9524-32daa7cd64a9
+Arg[5]: --vrde
+Arg[6]: config
+AddRef: illegal refcnt=3221225469 state=2

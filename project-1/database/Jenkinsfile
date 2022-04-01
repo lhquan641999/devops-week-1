@@ -1,0 +1,43 @@
+pipeline {
+    agent {
+        label "k8s"
+    }
+    environment {
+        GIT_COMMIT_SHORT = sh(
+            script: "printf \$(git rev-parse --short ${GIT_COMMIT})",
+            returnStdout: true
+        )
+        GIT_COMMIT_DATE = sh(
+            script: "printf \$(git show -s --format=%ci ${GIT_COMMIT})",
+            returnStdout: true
+        )
+    }
+    stages {
+        stage ("Validate") {
+            steps {
+                sh "docker version"
+                sh "node --version"
+                sh "npm version"
+            }
+        }
+        stage ("build images data-base") {
+            steps {
+                sh "cd /k8s/project-1/database"
+                sh "docker build -t quanlh0604/data-base-postgres -f Dockerfile ."
+            }
+        }
+        stage ("Deploy back-end service") {
+            steps {
+                sh "cd .."
+                sh "kubectl apply -f deployment-backend.yaml"
+            }
+        }
+    }
+    post {
+        always {
+            echo 'Cleaning up workspace'
+            sh "docker rmi  quanlh0604/data-base-postgres || true"
+            deleteDir() 
+        }
+    }
+}

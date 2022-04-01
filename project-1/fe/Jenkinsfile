@@ -1,0 +1,31 @@
+pipeline {
+    agent {
+        label "k8s"
+    }
+    stages {
+        stage ("Validate") {
+            steps {
+                sh "docker version"
+            }
+        }
+        stage ("build images front-end") {
+            steps {
+                sh "cd /k8s/project-1/fe"
+                sh "docker build -t quanlh0604/front-end-week-3 -f Dockerfile ."
+            }
+        }
+        stage ("Deploy back-end service") {
+            steps {
+                sh "cd .."
+                sh "kubectl apply -f /k8s/project-1/deployment-front-end.yaml"
+            }
+        }
+    }
+    post {
+        always {
+            echo 'Cleaning up workspace'
+            sh "docker rmi  quanlh0604/front-end-week-3 || true"
+            deleteDir() 
+        }
+    }
+}
